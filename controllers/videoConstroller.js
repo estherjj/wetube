@@ -1,7 +1,16 @@
-export const home = (req, res) => res.send("Home");
-export const search = (req, res) => res.send("Search");
-export const videos = (req, res) => res.send("Videos");
-export const upload = (req, res) => res.send("Upload");
-export const videoDetail = (req, res) => res.send("Video-Detail");
-export const editVideo = (req, res) => res.send("Edit-Video");
-export const deleteVideo = (req, res) => res.send("Delete-Video");
+export const home = (req, res) => res.render("home", {pageTitle: "Home"});
+
+export const search = (req, res) => {
+    const {query: {term: searchingBy}} = req;  //searchingBy는 req.query.term과 같음
+    res.render("search", {pageTitle: "Search", searchingBy: searchingBy});
+};
+
+export const videos = (req, res) => res.render("videos", {pageTitle: "Videos"});
+
+export const upload = (req, res) => res.render("upload", {pageTitle: "Upload"});
+
+export const videoDetail = (req, res) => res.render("video-Detail", {pageTitle: "Video Detail"});
+
+export const editVideo = (req, res) => res.render("edit-Video", {pageTitle: "Edit Video"});
+
+export const deleteVideo = (req, res) => res.render("delete-Video", {pageTitle: "Delete Video"});
