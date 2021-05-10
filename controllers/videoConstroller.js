@@ -1,13 +1,19 @@
-import {videosFiles} from "../db"
-import routes from "../routes"
+import routes from "../routes";
+import video from "../models/video";
 
-export const home = (req, res) => {
-    res.render("home", {pageTitle: "Home", videosFiles});
+export const home = async(req, res) => {
+   try {
+    const videos = await video.find({});
+    res.render("home", {pageTitle: "Home", videos});
+   } catch(error) {
+       console.log(error);
+       res.render("home", {pageTitle: "Home", videos: []});
+   }
 };
 
 export const search = (req, res) => {
     const {query: {term: searchingBy}} = req;  //searchingBy는 req.query.term과 같음
-    res.render("search", {pageTitle: "Search", searchingBy: searchingBy, videosFiles});
+    res.render("search", {pageTitle: "Search", searchingBy: searchingBy, videos});
 };
 
 export const videos = (req, res) => res.render("videos", {pageTitle: "Videos"});

@@ -3,7 +3,7 @@ include mixins/videoBlock
 
 block content 
     .videos
-        each videoItem in videosFiles 
+        each videoItem in videos 
             +videoBlock({
                 id: videoItem.id,
                 title: videoItem.title,
