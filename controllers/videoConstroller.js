@@ -3,7 +3,7 @@ import video from "../models/video";
 
 export const home = async(req, res) => {
    try {
-    const videos = await video.find({});
+    const videos = await video.find({}).sort({_id: -1}); //최신순 정렬을 위한 sort()
     res.render("home", {pageTitle: "Home", videos});
    } catch(error) {
        console.log(error);
@@ -35,8 +35,49 @@ export const postUpload = async(req, res) => {
 
 }
 
-export const videoDetail = (req, res) => res.render("videoDetail", {pageTitle: "Video Detail"});
+export const videoDetail = async (req, res) => {
+    const {
+        params: {id}
+    } = req;
+    try {
+        const vvideo = await video.findById(id);
+        res.render("videoDetail", {pageTitle: vvideo.title, vvideo});
+    } catch(error) {
+        res.redirect(routes.home)
+    }
+}
+export const getEditVideo = async(req, res) => {
+    const {
+        params: {id}
+    } = req;
+    try {
+        const vvideo = await video.findById(id);
+        res.render("editVideo", {pageTitle: `Edit ${vvideo.title}`, vvideo});
+    } catch (error) {
+        res.redirect(routes.home)
+    }
+}
 
-export const editVideo = (req, res) => res.render("editVideo", {pageTitle: "Edit Video"});
+export const postEditVideo = async(req, res) => {
+    const {
+        params: {id},
+        body: {title, description}
+    } = req;
+    try {
+        await video.findOneAndUpdate({_id: id}, {title, description});
+        res.redirect(routes.videoDetail(id));
+    } catch (error) {
+        res.redirect(routes.home);
+    }
+}
 
-export const deleteVideo = (req, res) => res.render("deleteVideo", {pageTitle: "Delete Video"});
+
+export const deleteVideo = async(req, res) => {
+    const {
+        params: {id}
+    }=req;
+    try {
+        await video.findOneAndRemove({_id: id});
+    }catch(error) {}
+        res.redirect(routes.home);
+}

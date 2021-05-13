@@ -5,7 +5,7 @@ dotenv.config();
 import "./models/video";
 import "./models/comment";
 
-const PORT =  4001;
+const PORT =  4000;
 
 const handleListening = () => console.log(`Listening on: http://localhost:${PORT}`);
 
