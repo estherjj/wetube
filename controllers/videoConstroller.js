@@ -11,9 +11,17 @@ export const home = async(req, res) => {
    }
 };
 
-export const search = (req, res) => {
-    const {query: {term: searchingBy}} = req;  //searchingBy는 req.query.term과 같음
-    res.render("search", {pageTitle: "Search", searchingBy: searchingBy, videos});
+export const search = async(req, res) => {
+    const {
+        query: {term: searchingBy}
+    } = req;  //const searchingFor = req.query.term;
+    let videos = [];
+    try {
+        videos = await video.find({title: {$regex: searchingBy, $options: "i"}})
+    }catch (error){
+        console.log(error);
+    }
+    res.render("search", {pageTitle: "Search", searchingBy, videos});
 };
 
 export const videos = (req, res) => res.render("videos", {pageTitle: "Videos"});
